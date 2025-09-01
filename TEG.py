@@ -49,23 +49,24 @@ if uploaded_file:
     if "Date/Time Run" in df.columns:
         df["Date/Time Run"] = pd.to_datetime(df["Date/Time Run"])
 
-    # Select date range
-    start_date, end_date = st.date_input(
+    # Let user pick date range (can be 1 or 2 dates)
+    date_range = st.date_input(
         "Select Date Range",
-        [df["Date/Time Run"].min().date(), df["Date/Time Run"].max().date()]
+        value=(df["Date/Time Run"].min().date(), df["Date/Time Run"].max().date())
     )
 
-    # Select start & end time
+    # Show time pickers
     start_time = st.time_input("Start Time", value=df["Date/Time Run"].min().time())
     end_time = st.time_input("End Time", value=df["Date/Time Run"].max().time())
 
-    # Combine date + time into datetime
-    start_datetime = pd.Timestamp.combine(start_date, start_time)
-    end_datetime = pd.Timestamp.combine(end_date, end_time)
+    # Apply filter only if 2 dates are selected
+    if isinstance(date_range, (list, tuple)) and len(date_range) == 2:
+        start_date, end_date = date_range
+        start_datetime = pd.Timestamp.combine(start_date, start_time)
+        end_datetime = pd.Timestamp.combine(end_date, end_time)
 
-    # Filter dataframe
-    df = df[(df["Date/Time Run"] >= start_datetime) &
-            (df["Date/Time Run"] <= end_datetime)]
+        df = df[(df["Date/Time Run"] >= start_datetime) &
+                (df["Date/Time Run"] <= end_datetime)]
 
 
     # Apply filters for categorical columns
