@@ -136,7 +136,7 @@ if "Date/Time Run" in df.columns:
         grouped = grouped[final_cols]
 
         # Show preview before export
-        st.write("Preview of Grouped Data:", grouped.head())
+        st.write("Preview of Grouped Data:", grouped)
 
         # Convert to CSV for download
         csv = grouped.to_csv(index=False).encode("utf-8")
