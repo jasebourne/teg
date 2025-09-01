@@ -46,8 +46,8 @@ if uploaded_file:
     df = df.drop(columns=[col for col in drop_cols if col in df.columns])
 
     # Convert date column
-if "Date/Time Run" in df.columns:
-    df["Date/Time Run"] = pd.to_datetime(df["Date/Time Run"])
+    if "Date/Time Run" in df.columns:
+        df["Date/Time Run"] = pd.to_datetime(df["Date/Time Run"])
 
     # Select date range
     start_date, end_date = st.date_input(
