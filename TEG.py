@@ -46,16 +46,27 @@ if uploaded_file:
     df = df.drop(columns=[col for col in drop_cols if col in df.columns])
 
     # Convert date column
-    if "Date/Time Run" in df.columns:
-        df["Date/Time Run"] = pd.to_datetime(df["Date/Time Run"], errors="coerce")
+if "Date/Time Run" in df.columns:
+    df["Date/Time Run"] = pd.to_datetime(df["Date/Time Run"])
 
-        # Date filter
-        start_date, end_date = st.date_input(
-            "Select Date Range",
-            [df["Date/Time Run"].min(), df["Date/Time Run"].max()]
-        )
-        df = df[(df["Date/Time Run"] >= pd.Timestamp(start_date)) &
-                (df["Date/Time Run"] <= pd.Timestamp(end_date))]
+    # Select date range
+    start_date, end_date = st.date_input(
+        "Select Date Range",
+        [df["Date/Time Run"].min().date(), df["Date/Time Run"].max().date()]
+    )
+
+    # Select start & end time
+    start_time = st.time_input("Start Time", value=df["Date/Time Run"].min().time())
+    end_time = st.time_input("End Time", value=df["Date/Time Run"].max().time())
+
+    # Combine date + time into datetime
+    start_datetime = pd.Timestamp.combine(start_date, start_time)
+    end_datetime = pd.Timestamp.combine(end_date, end_time)
+
+    # Filter dataframe
+    df = df[(df["Date/Time Run"] >= start_datetime) &
+            (df["Date/Time Run"] <= end_datetime)]
+
 
     # Apply filters for categorical columns
     for col in filter_cols:
