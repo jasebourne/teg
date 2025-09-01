@@ -48,6 +48,7 @@ if uploaded_file:
     # Convert date column
     if "Date/Time Run" in df.columns:
         df["Date/Time Run"] = pd.to_datetime(df["Date/Time Run"])
+        df["Date/Time Run"] = pd.to_datetime(df["Date/Time Run"])
 
     # Let user pick date range (can be 1 or 2 dates)
     date_range = st.date_input(
@@ -137,7 +138,7 @@ if uploaded_file:
         grouped = grouped[final_cols]
 
         # Show preview before export
-        st.write("Preview of Grouped Data:", grouped.head())
+        st.write("Preview of Grouped Data:", grouped)
 
         # Convert to CSV for download
         csv = grouped.to_csv(index=False).encode("utf-8")
@@ -147,3 +148,4 @@ if uploaded_file:
             file_name="TEG_grouped.csv",
             mime="text/csv"
         )
+
