@@ -228,7 +228,7 @@ if uploaded_file:
 
 
         # Show preview before export with highlighting
-        st.write("Preview Reorganized Data:")
+        st.write("Preview Cleaned Data:")
         # Apply highlighting to the 'grouped' DataFrame        
         grouped.index = grouped.index + 1  # Start index from 1 for display
         st.dataframe(highlight_grouped_dataframe(grouped))
@@ -236,9 +236,10 @@ if uploaded_file:
         # Convert to CSV for download
         csv = grouped.to_csv(index=False).encode("utf-8")
         st.download_button(
-            label="Download Grouped CSV",
+            label="Download Cleaned CSV",
             data=csv,
             file_name="TEG_grouped.csv",
             mime="text/csv"
 
         )
+
