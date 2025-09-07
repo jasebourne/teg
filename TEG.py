@@ -137,8 +137,92 @@ if uploaded_file:
 
         grouped = grouped[final_cols]
 
-        # Show preview before export
-        st.write("Preview of Grouped Data:", grouped)
+
+
+        # --- Highlight out-of-range values in grouped data ---
+        # Default to L1, if Sample Type is not L1 then use L2
+        grouped_ranges_by_sample = {
+            "L1": {
+                "CK (min) R": (4.6, 9.9),
+                "CK (mm) MA": (64, 69),
+                "CKH (min) R": (3.6, 8.2),
+                "CKH LY30%": (0, 0),
+                "CRTH (mm) MA": (57, 64),
+                "CFFH (mm) MA": (58, 66),
+                "HKH (mm) MA": (50, 70),
+                "ActF (mm) MA": (50, 70),
+                "ADP (mm) MA": (50, 70),
+                "ADP % Inhibition": (0, 100),
+                "ADP % Aggregation": (0, 100),
+                "AA (mm) MA": (50, 70),
+                "AA % Inhibition": (0, 100),
+                "AA % Aggregation": (0, 100)
+            },
+            "L2": {
+                "CK (min) R": (1, 1.5),
+                "CK (mm) MA": (24, 31),
+                "CKH (min) R": (1, 1.5),
+                "CKH LY30%": (90, 93),
+                "CRTH (mm) MA": (26, 33),
+                "CFFH (mm) MA": (24, 32),
+                "HKH (mm) MA": (55, 75),
+                "ActF (mm) MA": (55, 75),
+                "ADP (mm) MA": (55, 75),
+                "ADP % Inhibition": (5, 95),
+                "ADP % Aggregation": (5, 95),
+                "AA (mm) MA": (55, 75),
+                "AA % Inhibition": (5, 95),
+                "AA % Aggregation": (5, 95)
+            }
+        }
+
+        def get_range_key_for_row(row):
+            # Default to L1, if Sample Type is not L1 then use L2
+            if "Sample Type" in row and str(row["Sample Type"]).strip() == "L1":
+                return "L1"
+            return "L2"
+
+        def highlight_grouped(val, col, range_key):
+            try:
+                v = float(val)
+                ranges = grouped_ranges_by_sample.get(range_key, grouped_ranges_by_sample["L1"])
+                low, high = ranges.get(col, (None, None))
+                if low is not None and high is not None and (v < low or v > high):
+                    return "color: red"
+            except Exception:
+                pass
+            return ""
+
+        def highlight_grouped_dataframe(grouped):
+            styled = grouped.style
+            # Get all unique columns from both L1 and L2 ranges
+            all_cols = set(grouped_ranges_by_sample["L1"].keys()).union(set(grouped_ranges_by_sample["L2"].keys()))
+
+            def apply_highlight(row):
+                styles = []
+                range_key = get_range_key_for_row(row)
+                ranges = grouped_ranges_by_sample.get(range_key, grouped_ranges_by_sample["L1"])
+                for col in grouped.columns:
+                    if col in ranges and col != "Sample Type": # Exclude 'Sample Type' column from highlighting
+                        low, high = ranges[col]
+                        try:
+                            v = float(row[col])
+                            if v < low or v > high:
+                                styles.append("color: red")
+                            else:
+                                styles.append("")
+                        except Exception:
+                            styles.append("")
+                    else:
+                        styles.append("") # No highlighting for columns not in ranges or 'Sample Type'
+                return styles
+
+            styled = grouped.style.apply(apply_highlight, axis=1)
+            return styled
+
+        # Show preview before export with highlighting
+        st.write("Preview of Grouped Data:")
+        st.dataframe(highlight_grouped_dataframe(grouped))
 
         # Convert to CSV for download
         csv = grouped.to_csv(index=False).encode("utf-8")
