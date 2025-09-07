@@ -152,14 +152,14 @@ if uploaded_file:
                 "CKH LY30%": (0, 0),
                 "CRTH (mm) MA": (57, 64),
                 "CFFH (mm) MA": (58, 66),
-                "HKH (mm) MA": (50, 70),
-                "ActF (mm) MA": (50, 70),
-                "ADP (mm) MA": (50, 70),
-                "ADP % Inhibition": (0, 100),
-                "ADP % Aggregation": (0, 100),
-                "AA (mm) MA": (50, 70),
-                "AA % Inhibition": (0, 100),
-                "AA % Aggregation": (0, 100)
+                "HKH (mm) MA": (53, 68),
+                "ActF (mm) MA": (2, 19),
+                "ADP (mm) MA": (45, 69),
+                "ADP % Inhibition": (0, 17),
+                "ADP % Aggregation": (83, 100),
+                "AA (mm) MA": (51, 71),
+                "AA % Inhibition": (0, 11),
+                "AA % Aggregation": (89, 100)
             },
             "L2": {
                 "CK (min) R": (1, 1.5),
@@ -168,14 +168,14 @@ if uploaded_file:
                 "CKH LY30%": (90, 93),
                 "CRTH (mm) MA": (26, 33),
                 "CFFH (mm) MA": (24, 32),
-                "HKH (mm) MA": (55, 75),
-                "ActF (mm) MA": (55, 75),
-                "ADP (mm) MA": (55, 75),
-                "ADP % Inhibition": (5, 95),
-                "ADP % Aggregation": (5, 95),
-                "AA (mm) MA": (55, 75),
-                "AA % Inhibition": (5, 95),
-                "AA % Aggregation": (5, 95)
+                "HKH (mm) MA": (53, 68),
+                "ActF (mm) MA": (2, 19),
+                "ADP (mm) MA": (45, 69),
+                "ADP % Inhibition": (0, 17),
+                "ADP % Aggregation": (83, 100),
+                "AA (mm) MA": (51, 71),
+                "AA % Inhibition": (0, 11),
+                "AA % Aggregation": (89, 100)
             }
         }
 
