@@ -123,10 +123,10 @@ if uploaded_file:
             "ActF_MA (mm)": "ActF (mm) MA",
             "ADP_MA (mm)": "ADP (mm) MA",
             "ADP_Inhibition (%)": "ADP % Inhibition",
-            "ADP % Aggregation": "ADP % Aggregation",
+            "ADP_Aggregation (%)": "ADP % Aggregation",
             "AA_MA (mm)": "AA (mm) MA",
-            "AA % Inhibition": "AA % Inhibition",
-            "AA % Aggregation": "AA % Aggregation"
+            "AA_Inhibition (%)": "AA % Inhibition",
+            "AA_Aggregation (%)": "AA % Aggregation"
         }
 
         # Desired result order
