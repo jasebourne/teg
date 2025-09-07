@@ -48,7 +48,8 @@ if uploaded_file:
     # Convert date column
     if "Date/Time Run" in df.columns:
         df["Date/Time Run"] = pd.to_datetime(df["Date/Time Run"])
-        df["Date/Time Run"] = pd.to_datetime(df["Date/Time Run"])
+        # No need to convert twice
+        # df["Date/Time Run"] = pd.to_datetime(df["Date/Time Run"])
 
     # Let user pick date range (can be 1 or 2 dates)
     date_range = st.date_input(
@@ -84,7 +85,8 @@ if uploaded_file:
     # --- Group and Export ---
     if st.button("Preview & Export Grouped Data"):
         # Separate result vs non-result columns
-        id_cols = ["Date/Time Run", "Test Name"]
+        # Include "Device Name" in id_cols for grouping
+        id_cols = ["Device Name", "Date/Time Run", "Test Name"]
         numeric_subset = [c for c in result_cols if c in df.columns]
         text_subset = [c for c in df.columns if c not in id_cols + numeric_subset]
 
@@ -93,18 +95,19 @@ if uploaded_file:
                           var_name="Measure", value_name="Value")
         pivoted["Measure"] = pivoted["Test Name"] + "_" + pivoted["Measure"]
 
-        # Pivot back wide
+        # Pivot back wide, using "Device Name" and "Date/Time Run" as index
         wide_numeric = pivoted.pivot_table(
-            index="Date/Time Run",
+            index=["Device Name", "Date/Time Run"],
             columns="Measure",
             values="Value",
             aggfunc="first"
         )
 
-        # Handle text/meta columns: keep first value
-        wide_text = df.groupby("Date/Time Run")[text_subset].first()
+        # Handle text/meta columns: keep first value, group by "Device Name" and "Date/Time Run"
+        wide_text = df.groupby(["Device Name", "Date/Time Run"])[text_subset].first()
 
         # Combine numeric + text
+        # Ensure index is aligned for concatenation
         grouped = pd.concat([wide_text, wide_numeric], axis=1).reset_index()
 
         # Define desired column renaming
@@ -119,10 +122,10 @@ if uploaded_file:
             "ActF_MA (mm)": "ActF (mm) MA",
             "ADP_MA (mm)": "ADP (mm) MA",
             "ADP_Inhibition (%)": "ADP % Inhibition",
-            "ADP_Aggregation (%)": "ADP % Aggregation",
+            "ADP % Aggregation": "ADP % Aggregation",
             "AA_MA (mm)": "AA (mm) MA",
-            "AA_Inhibition (%)": "AA % Inhibition",
-            "AA_Aggregation (%)": "AA % Aggregation"
+            "AA % Inhibition": "AA % Inhibition",
+            "AA % Aggregation": "AA % Aggregation"
         }
 
         # Desired result order
@@ -131,12 +134,11 @@ if uploaded_file:
         # Apply renaming
         grouped = grouped.rename(columns=rename_map)
 
-        # Reorder final columns
-        final_cols = ["Date/Time Run"] + [c for c in grouped.columns if c not in result_order + ["Date/Time Run"]] + \
+        # Reorder final columns - ensure "Device Name" is included
+        final_cols = ["Device Name", "Date/Time Run"] + [c for c in grouped.columns if c not in result_order + ["Device Name", "Date/Time Run"]] + \
                      [c for c in result_order if c in grouped.columns]
 
         grouped = grouped[final_cols]
-
 
 
         # --- Highlight out-of-range values in grouped data ---
@@ -185,9 +187,11 @@ if uploaded_file:
         def highlight_grouped(val, col, range_key):
             try:
                 v = float(val)
+                # Round the value to 1 decimal place
+                v_rounded = round(v, 1)
                 ranges = grouped_ranges_by_sample.get(range_key, grouped_ranges_by_sample["L1"])
                 low, high = ranges.get(col, (None, None))
-                if low is not None and high is not None and (v < low or v > high):
+                if low is not None and high is not None and (v_rounded < low or v_rounded > high):
                     return "color: red"
             except Exception:
                 pass
@@ -207,7 +211,8 @@ if uploaded_file:
                         low, high = ranges[col]
                         try:
                             v = float(row[col])
-                            if v < low or v > high:
+                            v_rounded = round(v, 1) # Round the value here as well for consistency
+                            if v_rounded < low or v_rounded > high:
                                 styles.append("color: red")
                             else:
                                 styles.append("")
@@ -220,9 +225,12 @@ if uploaded_file:
             styled = grouped.style.apply(apply_highlight, axis=1)
             return styled
 
+
         # Show preview before export with highlighting
         st.write("Preview of Grouped Data:")
-        st.dataframe(highlight_grouped_dataframe(grouped))
+        # Apply highlighting to the 'grouped' DataFrame
+        styled_grouped = highlight_grouped_dataframe(grouped)
+        st.dataframe(styled_grouped)
 
         # Convert to CSV for download
         csv = grouped.to_csv(index=False).encode("utf-8")
@@ -232,4 +240,3 @@ if uploaded_file:
             file_name="TEG_grouped.csv",
             mime="text/csv"
         )
-
