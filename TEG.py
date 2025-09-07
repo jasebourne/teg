@@ -78,7 +78,8 @@ if uploaded_file:
             selected = st.multiselect(f"Filter by {col}", options)
             if selected:
                 df = df[df[col].isin(selected)]
-
+    
+    df.index = df.index + 1  # Start index from 1 for display
     # Show final filtered data
     st.dataframe(df)
 
@@ -228,9 +229,9 @@ if uploaded_file:
 
         # Show preview before export with highlighting
         st.write("Preview of Grouped Data:")
-        # Apply highlighting to the 'grouped' DataFrame
-        styled_grouped = highlight_grouped_dataframe(grouped)
-        st.dataframe(styled_grouped)
+        # Apply highlighting to the 'grouped' DataFrame        
+        grouped.index = grouped.index + 1  # Start index from 1 for display
+        st.dataframe(highlight_grouped_dataframe(grouped))
 
         # Convert to CSV for download
         csv = grouped.to_csv(index=False).encode("utf-8")
