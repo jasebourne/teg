@@ -84,7 +84,7 @@ if uploaded_file:
     st.dataframe(df)
 
     # --- Group and Export ---
-    if st.button("Preview & Export Grouped Data"):
+    if st.button("Reorganize Data"):
         # Separate result vs non-result columns
         # Include "Device Name" in id_cols for grouping
         id_cols = ["Device Name", "Date/Time Run", "Test Name"]
@@ -228,7 +228,7 @@ if uploaded_file:
 
 
         # Show preview before export with highlighting
-        st.write("Preview of Grouped Data:")
+        st.write("Preview Reorganized Data:")
         # Apply highlighting to the 'grouped' DataFrame        
         grouped.index = grouped.index + 1  # Start index from 1 for display
         st.dataframe(highlight_grouped_dataframe(grouped))
@@ -240,4 +240,5 @@ if uploaded_file:
             data=csv,
             file_name="TEG_grouped.csv",
             mime="text/csv"
+
         )
