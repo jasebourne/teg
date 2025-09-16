@@ -146,12 +146,12 @@ if uploaded_file:
         # Default to L1, if Sample Type is not L1 then use L2
         grouped_ranges_by_sample = {
             "L1": {
-                "CK (min) R": (5.2, 7.6),
+                "CK (min) R": (4.6, 9.9),
                 "CK (mm) MA": (64, 69),
-                "CKH (min) R": (3.6, 6.8),
+                "CKH (min) R": (3.6, 8.2),
                 "CKH LY30%": (0, 0),
-                "CRTH (mm) MA": (59, 64),
-                "CFFH (mm) MA": (59, 66),
+                "CRTH (mm) MA": (57, 64),
+                "CFFH (mm) MA": (58, 66),
                 "HKH (mm) MA": (53, 68),
                 "ActF (mm) MA": (2, 19),
                 "ADP (mm) MA": (45, 69),
@@ -163,11 +163,11 @@ if uploaded_file:
             },
             "L2": {
                 "CK (min) R": (1, 1.5),
-                "CK (mm) MA": (22, 31),
+                "CK (mm) MA": (24, 31),
                 "CKH (min) R": (1, 1.5),
-                "CKH LY30%": (91, 94),
-                "CRTH (mm) MA": (22, 33),
-                "CFFH (mm) MA": (22, 32),
+                "CKH LY30%": (90, 93),
+                "CRTH (mm) MA": (26, 33),
+                "CFFH (mm) MA": (24, 32),
                 "HKH (mm) MA": (53, 68),
                 "ActF (mm) MA": (2, 19),
                 "ADP (mm) MA": (45, 69),
@@ -242,5 +242,3 @@ if uploaded_file:
             mime="text/csv"
 
         )
-
-
