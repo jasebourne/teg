@@ -146,12 +146,12 @@ if uploaded_file:
         # Default to L1, if Sample Type is not L1 then use L2
         grouped_ranges_by_sample = {
             "L1": {
-                "CK (min) R": (4.6, 9.9),
-                "CK (mm) MA": (64, 69),
-                "CKH (min) R": (3.6, 8.2),
+                "CK (min) R": (6.6, 12),
+                "CK (mm) MA": (65.3, 70.7),
+                "CKH (min) R": (4.2, 8.4),
                 "CKH LY30%": (0, 0),
-                "CRTH (mm) MA": (57, 64),
-                "CFFH (mm) MA": (58, 66),
+                "CRTH (mm) MA": (55.6, 64.6),
+                "CFFH (mm) MA": (59, 65.6),
                 "HKH (mm) MA": (53, 68),
                 "ActF (mm) MA": (2, 19),
                 "ADP (mm) MA": (45, 69),
@@ -162,12 +162,12 @@ if uploaded_file:
                 "AA % Aggregation": (89, 100)
             },
             "L2": {
-                "CK (min) R": (1, 1.5),
-                "CK (mm) MA": (24, 31),
-                "CKH (min) R": (1, 1.5),
-                "CKH LY30%": (90, 93),
-                "CRTH (mm) MA": (26, 33),
-                "CFFH (mm) MA": (24, 32),
+                "CK (min) R": (1, 1.6),
+                "CK (mm) MA": (23.5, 31.3),
+                "CKH (min) R": (1, 1.6),
+                "CKH LY30%": (92, 94.4),
+                "CRTH (mm) MA": (25.6, 32.8),
+                "CFFH (mm) MA": (24.3, 32.1),
                 "HKH (mm) MA": (53, 68),
                 "ActF (mm) MA": (2, 19),
                 "ADP (mm) MA": (45, 69),
