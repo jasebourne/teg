@@ -242,5 +242,3 @@ if uploaded_file:
             mime="text/csv"
 
         )
-
-
